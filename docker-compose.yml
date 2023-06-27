@@ -1,0 +1,60 @@
+version: "3"
+services:
+  db:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: secretpassword
+      MYSQL_DATABASE: webacademy_livros
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./db_data:/var/lib/mysql
+    networks:
+      - rede_1
+
+  backend:
+    build: ./webacademy-livros-backend
+    restart: always
+    ports:
+      - "4444:4444"
+    volumes:
+      - ./webacademy-livros-backend/log:/log
+    depends_on:
+      - db
+    networks:
+      - rede_1
+
+  frontend:
+    build: ./webacademy-livros-frontend
+    restart: always
+    ports:
+      - "8000:80"
+    volumes:
+      - ./webacademy-livros-frontend/log:/log
+    depends_on:
+      - db
+    networks:
+      - rede_1
+
+  phpadmin:
+    container_name: phpadmin
+    image: phpmyadmin:latest
+    ports:
+      - 8080:80
+    environment:
+      - PMA_HOST = db
+      - PMA_PORT = 3306
+      - PMA_USER = root
+      - PMA_PASSWORD = secretpassword
+    depends_on:
+      - db
+    networks:
+      - rede_1
+
+networks:
+  rede_1:
+    driver: bridge
+
+volumes:
+  vol_1:

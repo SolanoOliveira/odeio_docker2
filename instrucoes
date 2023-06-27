@@ -1,0 +1,21 @@
+para iniciar a aplicacaco
+
+adicione os node_modules no backend
+
+rode o script dentro do container no php admin
+
+CREATE TABLE IF NOT EXISTS livros (
+    id VARCHAR(36) PRIMARY KEY,
+    nome VARCHAR(180) NOT NULL,
+    sinopse TEXT NOT NULL,
+    isbn VARCHAR(13) NOT NULL UNIQUE,
+    autores JSON NOT NULL,
+    url_imagem TEXT
+);
+
+e faca inserts no banco de dados
+
+e por fim execute o comando no terminal
+
+ docker compose up
+
